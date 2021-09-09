@@ -19,3 +19,32 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+- task: CmdLine@2
+  inputs:
+    script: |
+      # Declare Variables
+      
+      $MyAXURL="https://online.acunetix.com/api/v1"
+      
+      $MyAPIKEY="1e0c066c0fda74040b4bb62fa29677f35d1174f1c1076f0a6d35d93bb9196d099"
+      
+      $FullScanProfileID="11111111-1111-1111-1111-111111111111"
+      
+      
+      $MyRequestHeaders=@{
+      
+       'X-Auth' = $MyAPIKEY
+      
+       'Content-Type' = 'application/json'
+      
+      }
+      
+      
+      $MyTargetID="03fda5ff-f4db-4631-aa63-dbdb9bfe6ed9"
+      
+      
+      # Trigger a scan on the target - Scan ID is in the HTTP Response Headers
+      
+      $MyRequestBody='{"profile_id":"' + $FullScanProfileID + '" , "incremental" : false , "schedule" : { "disable" : false , "start_date" : null , "time_sensitive" : false } , "user_authorized_to_scan" : "yes" , "target_id" : "' + $MyTargetID + '" } '
+      
+      Invoke-RestMethod -Uri $MyAXURL/scans -Headers $MyRequestHeaders -Method Post -Body $MyRequestBody
