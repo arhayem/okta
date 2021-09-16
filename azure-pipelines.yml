@@ -14,7 +14,11 @@ steps:
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
-
+- task: acunetix360@1
+  inputs:
+    apiConnection: 'Acunetix 360 API Connection'
+    scanTypes: '1'
+    scanWebSites: '96cb7752-6938-48bb-dada-ada5026afab0'
 - script: |
     npm install
     npm run build
